@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/tx2/catkin_ws/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/tx2/catkin_ws/src/aruco_ros/aruco/include/**",
+        "/home/tx2/catkin_ws/src/aruco_ros/aruco_ros/include/**",
+        "/home/tx2/catkin_ws/src/vision_opencv/cv_bridge/include/**",
+        "/home/tx2/catkin_ws/src/darknet_ros/darknet_ros/include/**",
+        "/home/tx2/catkin_ws/src/ddynamic_reconfigure/include/**",
+        "/home/tx2/catkin_ws/src/vision_opencv/image_geometry/include/**",
+        "/home/tx2/catkin_ws/src/realsense-ros/realsense2_camera/include/**",
+        "/home/tx2/catkin_ws/src/tomato_pkg/include/**",
+        "/home/tx2/catkin_ws/src/universal_robot/ur_kinematics/include/**",
+        "/home/tx2/catkin_ws/src/ur_modern_driver/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}
