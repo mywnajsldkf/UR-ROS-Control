@@ -461,6 +461,8 @@ Visualization Manager:
           Value: false
         forearm_link:
           Value: false
+        goal_wpose:
+          Value: true
         ground_base1:
           Value: false
         handmount_link:
@@ -492,6 +494,8 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
+          goal_wpose:
+            {}
           ground_base1:
             base_pillar:
               base_link:
@@ -664,8 +668,8 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: camera_link
-#    Fixed Frame: world
+#    Fixed Frame: camera_link
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -685,7 +689,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Class: rtabmap_ros/OrbitOriented
+      Class: rviz/Orbit
       Distance: 0.297682256
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
@@ -704,7 +708,7 @@ Visualization Manager:
       Pitch: 0.440401167
 #      Target Frame: base_footprint
       Target Frame: <Fixed Frame>
-      Value: OrbitOriented (rtabmap)
+      Value: Orbit (rviz)
       Yaw: 3.52086997
     Saved: ~
 Window Geometry:
