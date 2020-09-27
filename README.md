@@ -98,13 +98,46 @@ YOLO depends on the OpenCV (at least 3.4.x)
   $ sudo apt-get install ros-melodic-moveit
   ```
 
-  
+
+### Start
+
+1. UR manipulator with moveit test (I'm using UR3 model)
+
+   - Bringup Gazebo
+
+     ```
+     $ roslaunch ur_gazebo ur3.launch
+     $ roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch sim:=true
+     $ roslaunch ur3_moveit_config moveit_rviz.launch config:=true
+     ```
+
+   - Bringup Real UR manipulator
+
+     ```
+     $ roslaunch ur_modern_driver ur3_bringup.launch robot_ip:=ROBOT_IP
+     $ roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch
+     ```
+
+     For more details, visit [here](http://wiki.ros.org/universal_robot/Tutorials/Getting%20Started%20with%20a%20Universal%20Robot%20and%20ROS-Industrial).
+
+   - Contolling the UR manipulator
+
+     ```
+     $ rosrun ur_modern_driver test_move.py
+     ```
+
+2. 
+
+
 
 ---
 
+
+
+
+
 Todo
 
-- UR3 연결해서 간단한 test해보기
 - 실행하기
   - Transform 하는 코드 다루기
   - 간단하게 moveit! 실행하는 것 다루기
