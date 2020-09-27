@@ -1,5 +1,5 @@
 <launch>
-  <arg name="limited" default="true"/>
+  <arg name="limited" default="false"/>
 
   <include file="$(find ur3_moveit_config)/launch/planning_context.launch">
     <arg name="limited" value="$(arg limited)" />
