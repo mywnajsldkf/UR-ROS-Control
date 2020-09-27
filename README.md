@@ -126,19 +126,68 @@ YOLO depends on the OpenCV (at least 3.4.x)
      $ rosrun ur_modern_driver test_move.py
      ```
 
-2. 
+2. Copy and paste
 
+   ```
+   $ cd UR3-ROS-Control/darknet_ros
+   
+   in config directory
+   $ cp -r ros.yaml ~/catkin_ws/src/darknet_ros/darknet_ros/config
+   $ cp -r tomato.yaml ~/catkin_ws/src/darknet_ros/darknet_ros/config
+   $ cp -r tomato_yolo_jsk.rviz ~/catkin_ws/src/darknet_ros/darknet_ros/config
+   
+   in launch directory
+   $ cp -r bringup_d435.launch ~/catkin_ws/src/darknet_ros/darknet_ros/launch
+   $ cp -r darknet_ros.launch ~/catkin_ws/src/darknet_ros/darknet_ros/launch
+   $ cp -r object_detect_rviz.launch ~/catkin_ws/src/darknet_ros/darknet_ros/launch
+   $ cp -r object_detection.launch ~/catkin_ws/src/darknet_ros/darknet_ros/launch
+   $ cp -r object_jsk_test.launch ~/catkin_ws/src/darknet_ros/darknet_ros/launch
+   
+   in darknet_ros directory
+   $ mv src ~/catkin_ws/src/darknet_ros/darknet_ros/src
+   $ mv include ~/catkin_ws/src/darknet_ros/darknet_ros/include
+   
+   in yolo_network_config/cfg
+   $ cp -r tomato.cfg ~/catkin_ws/src/darknet_ros/darknet_ros/cfg
+   
+   in universal_robot directory
+   $ mv ur_description ~/catkin_ws/src/universal_robot/ur_description
+   $ mv ur_description ~/catkin_ws/src/universal_robot/ur3_moveit_config
+   ```
 
+   Weight file Download [link](https://drive.google.com/file/d/1f615qxgQMaswqy6ZJyNqtfsV400mJbBY/view)
 
----
+   ```
+   $ cp -r tomato_3000.weights ~/catkin_ws/src/darknet_ros/darknet_ros/yolo_network_config/weights
+   ```
 
+3. Launch
 
+   - Bringup Gazebo
 
+     ```
+     $ roscore
+     $ roslaunch ur_gazebo ur3.launch
+     $ roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch sim:=true
+     ```
 
+   - (Or) Bringup RealRobot
 
-Todo
+     ```
+     $ roscore
+     $ roslaunch ur_modern_driver ur3_bringup.launch robot_ip:=ROBOT_IP
+     $ roslaunch ur3_moveit_config ur3_moveit_planning_execution.launch
+     ```
 
-- 실행하기
-  - Transform 하는 코드 다루기
-  - 간단하게 moveit! 실행하는 것 다루기
-  - 목표치까지 가는 코드 작성하기
+   - start Rviz
+
+     ```
+     $ roslaunch darknet_ros object_detect_rviz.launch
+     $ roslaunch darknet_ros object_jsk_test.launch
+     $ roslaunch darknet_ros ur3_yolo_move.py 		// Control UR3 with YOLO  
+     ```
+
+     
+
+   
+
