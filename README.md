@@ -6,12 +6,11 @@ Universal Robot (UR3) moving to detected object with ROS using a realsense camer
 
 It is for UR3, UR5 and UR10 manipulator(I'm using only UR3 real-hardwrae) with Moveit!. It detects object using darknet-ros and jsk-pcl.
 
-- [darknet_ros (YOLO)](https://github.com/leggedrobotics/darknet_ros) for real-time detection object by making bounding box
-- [jsk_pcl](https://github.com/jsk-ros-pkg/jsk_recognition) estimation coordinate detected object by darknet_ros(YOLO)
+- [darknet_ros_3d](https://github.com/IntelligentRoboticsLabs/gb_visual_detection_3d) for real-time detection object by making 3D bounding box
 - [universal_robot](http://wiki.ros.org/action/show/universal_robots?action=show&redirect=universal_robot)
 - [ur_modern_driver](http://wiki.ros.org/ur_modern_driver)
 
-They are tested under JetsonTX2, ROS1 melodic and Ubuntu 18.04, OpenCV 3.4.6, CUDA Version 10.2.
+They are tested under ROS1 melodic and Ubuntu 18.04, OpenCV 3.4.0, CUDA Version 10.2.
 
 ### Installation
 
@@ -21,82 +20,99 @@ If you want to use this package, please follow this procedure
 
 This package works on the ROS(Robot Operating System).
 
-Please check your linux version, before downloading ROS 
+1. Please check your linux version, before downloading ROS 
 
-- [Ubuntu 18.04 (melodic install)](http://wiki.ros.org/melodic/Installation/Ubuntu)
+   [Ubuntu 18.04 (melodic install)](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
-YOLO depends on the OpenCV (at least 3.4.x)
+2. YOLO depends on the OpenCV (at least 3.4.x)
 
-- [OpenCV 3.4.6 (on Jetson)](https://jkjung-avt.github.io/opencv-on-nano/)
+   ROS1 default python package is `python2.7`. so please keep in mind installing OpenCV 3.4.0 on python2. 
 
-  ROS1 default python package is `python2.7`. So I change a shell script a little to install OpenCV 3.4.6 on python2. [Here](https://github.com/mywnajsldkf/object-detection/blob/master/doc/install_opencv-3.4.6.sh) is shell script that I changed.
+3. Make your own package. Please follow this procedure
 
-- If you don't have any package. please follow this procedure.
+   ```
+   $ mkdir -p ~/catkin_ws/src
+   $ cd ..
+   $ catkin_make	# build, devel, src directory will be made
+   $ source ~/catkin_ws/devel/setup.bash	# register workspace
+   ```
 
-  ```
-  $ mkdir -p ~/catkin_ws/src
-  $ cd ..
-  $ catkin_make	# build, devel, src directory will be made
-  $ source ~/catkin_ws/devel/setup.bash	# register workspace
-  ```
+4. darknet_ros_3d
 
-- darknet_ros
+   I used YOLOV4 model to detect the object 
 
-  ```
-  $ cd ~/catkin_ws/src
-  $ git clone --recursive https://github.com/leggedrobotics/darknet_ros.git
-  $ cd ..
-  $ catkin_make -DCMAKE_BUILD_TYPE=Release
-  $ rospack profile
-  ```
+   ```
+   $ cd ~/catkin_ws/src
+   $ git clone https://github.com/tom13133/darknet_ros			
+   $ cd darknet_ros
+   $ rm -rf darknet
+   $ git clone https://github.com/AlexeyAB/darknet 		// clone darknet
+   $ cd ..
+   $ catkin_make
+   ```
 
-- [IntelRealSense](https://github.com/IntelRealSense)
+5. [IntelRealSense](https://github.com/IntelRealSense)
 
-  - Download [Intel Realsense SDK](https://github.com/IntelRealSense/librealsense/releases)
+   - Download [IntelRealsense SDK](https://github.com/IntelRealSense/librealsense/releases) 
 
-  - [realsense-ros](https://github.com/IntelRealSense/librealsense/releases)
+     ```
+     // install some packages to build the IntelRealsense SDK
+     $ sudo apt install libgtk-3-dev libxcursor-dev libxinerama-dev
+     $ tar zxf librealsense-2.41.0			// i installed RealSenseSDK(v2.41.0)
+     $ cd librealsense2.41.0
+     $ mkdir build
+     $ cd build
+     $ cmake ..
+     
+     // start SDK build
+     $ make -j$(nproc)
+     // After finish build completely, start install
+     $ sudo make install
+     ```
 
-  - Please check the realsense-ros version because it depends on the Intel RealSense SDK
+   - [Realsense-ros](https://github.com/IntelRealSense/realsense-ros)
 
-    ( I installed [RealSenseSDK(v2.31.0)](https://github.com/IntelRealSense/librealsense/releases/tag/v2.31.0) matches [realsense-ros(2.2.11)](https://github.com/IntelRealSense/realsense-ros/tree/2.2.11) )
+     ```
+     $ cd ~/catkin_ws/src
+     $ git clone https://github.com/IntelRealSense/realsense-ros.git
+     $ cd ..
+     $ catkin_make
+     ```
 
-- [jsk_recongnition](https://github.com/jsk-ros-pkg/jsk_recognition)
+   - Please check the realsense-ros version because it depends on the Intel RealSense SDK
 
-  ```
-  sudo apt-get install ros-melodic-jsk-recognition
-  sudo apt-get install ros-melodic-jsk-topic-tools
-  
-  $ cd ~/catkin_ws/src
-  $ git clone https://github.com/jsk-ros-pkg/jsk_common.git
-  ```
+     (I installed RealSenseSDK(v2.41.0) matches realsense-ros(2.2.1))
 
-- packages
+     For more details, please refer https://github.com/IntelRealSense/realsense-ros/releases
 
-  ```
-  $ sudo apt-get install ros-melodic-octomap-server
-  $ sudo apt-get install ros-melodic-nodelet
-  $ sudo apt-get install ros-melodic-depth-image-proc
-  $ sudo apt-get install ros-melodic-rtabmap-ros
-  $ sudo apt-get install ros-melodic-navigation
-  ```
+6. Universal Robit, ur_modern_driver
 
-- [Universal Robot](https://github.com/ros-industrial/universal_robot), [ur_modern_driver](https://github.com/ros-industrial/ur_modern_driver)
+   ```
+   $ cd ~/catkin_ws/src
+   $ git clone https://github.com/ros-industrial/universal_robot
+   $ git clone https://github.com/ThomasTimm/ur_modern_driver
+   $ cd ..
+   $ catkin_make
+   ```
 
-  ```
-  $ cd ~/catkin_ws/src
-  $ git clone https://github.com/ros-industrial/universal_robot
-  $ git clone https://github.com/ThomasTimm/ur_modern_driver
-  $ cd ..
-  $ catkin_make
-  ```
+   You might be see a error during building your project. Refer this [document](https://github.com/ros-industrial/ur_modern_driver/issues/58).
 
-  You might be see a error during build your project. Refer this [document](https://github.com/ros-industrial/ur_modern_driver/issues/58).
+7. [Moveit!](https://moveit.ros.org/)
 
-- [Moveit!](https://moveit.ros.org/)
+   ```
+   $ sudo apt-get install ros-melodic-moveit
+   ```
 
-  ```
-  $ sudo apt-get install ros-melodic-moveit
-  ```
+
+
+---
+
+**Todo**
+
+- UR3 로봇을 가지고 실험해보는 것 정리하기 -> 새롭게 하나 패키지 파서 거기에 차근차근 정리하는 것도 괜찮을 듯
+- object detection을 진행하는것
+- 사용한 yolov3, v4 모델에 대해 내용 -> 내 나름대로 이렇게 사용하면 좋겠다 등등을 정리하여 올린다.
+
 
 
 ### Start
